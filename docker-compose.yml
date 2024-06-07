@@ -22,8 +22,9 @@ services:
 
   minio:
     <<: *service
-    image: quay.io/minio/minio:2024-06-06T09-36-42Z-cpuv1
+    image: quay.io/minio/minio:RELEASE.2024-06-06T09-36-42Z-cpuv1
     command: server /data --address ":9000" --console-address ":9001"
+    container_name: minio
     volumes:
       - minio:/data
     environment:
@@ -51,7 +52,6 @@ services:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
     volumes:
       - redis:/data
-
 
 volumes:
   minio:
