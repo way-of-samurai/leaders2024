@@ -22,7 +22,7 @@ services:
 
   minio:
     <<: *service
-    image: quay.io/minio/minio:2024-06-06T09-36-42Z-cpuv1
+    image: quay.io/minio/minio:RELEASE.2024-06-06T09-36-42Z-cpuv1
     command: server /data --address ":9000" --console-address ":9001"
     volumes:
       - minio:/data
