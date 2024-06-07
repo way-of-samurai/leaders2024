@@ -52,7 +52,6 @@ services:
     volumes:
       - redis:/data
 
-
 volumes:
   minio:
   postgres:
