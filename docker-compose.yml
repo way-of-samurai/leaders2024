@@ -24,6 +24,7 @@ services:
     <<: *service
     image: quay.io/minio/minio:RELEASE.2024-06-06T09-36-42Z
     command: server /data --address ":9000" --console-address ":9001"
+    container_name: minio
     volumes:
       - minio:/data
     environment:
