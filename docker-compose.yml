@@ -1,0 +1,59 @@
+version: "3"
+
+x-service: &service
+  restart: unless-stopped
+
+services:
+  frontend:
+    <<: *service
+    build: ./frontend
+    ports:
+      - "8080:8080"
+
+  backend:
+    <<: *service
+    build: ./backend
+    ports:
+      - "8081:8081"
+    depends_on:
+      - minio
+      - postgres
+      - redis
+
+  minio:
+    <<: *service
+    image: quay.io/minio/minio:2024-06-06T09-36-42Z-cpuv1
+    command: server /data --address ":9000" --console-address ":9001"
+    volumes:
+      - minio:/data
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+    ports:
+      - 9001:9001
+
+  postgres:
+    <<: *service
+    image: postgres:16.3-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+  redis:
+    <<: *service
+    image: redis:7.2-alpine
+    command: 'redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}'
+    container_name: redis
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    volumes:
+      - redis:/data
+
+
+volumes:
+  minio:
+  postgres:
+  redis:
