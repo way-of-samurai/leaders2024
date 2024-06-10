@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "lct-promt-server"
+version = "0.1.0"
+description = ""
+authors = ["Gulyaev Nikolay <nikolay.gulyaev@raiffeisen.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+flask = "^3.0.3"
+sqlalchemy = "^2.0.30"
+transformers = "^4.41.2"
+flask-jwt-extended = {extras = ["asymmetric-crypto"], version = "^4.6.0"}
+flask-sqlalchemy = "^3.1.1"
+llama-cpp-python = "^0.2.77"
+s3fs = "^2024.6.0"
+psycopg2-binary = "^2.9.9"
+langchain = "^0.2.4"
+torch = "^2.3.1"
+torchvision = "^0.18.1"
+diffusers = "^0.29.0"
+
+
+[[tool.poetry.source]]
+name = "pytorch-gpu-src"
+url = "https://download.pytorch.org/whl/cu121"
+priority = "explicit"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
