@@ -17,12 +17,31 @@ services:
   backend:
     <<: *service
     build: ./backend
+    container_name: backend
+    environment:
+      DB_URL: "postgresql+psycopg2://postgres:${POSTGRES_PASSWORD}@postgres:5432/leaders2024"
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      FSSPEC_S3_ENDPOINT_URL: http://minio:9000
+      FSSPEC_S3_KEY: ${MINIO_ROOT_USER}
+      FSSPEC_S3_SECRET: ${MINIO_ROOT_PASSWORD}
+      SD_REFERENCES_PATH: "s3://leaders2024/ml/sd/references"
+      DEFAULT_SD_WEIGHTS_PATH: "s3://leaders2024/ml/sd/weights/gpb-lora.safetensors"
+      DEBUG: "False"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0', '1']
+              capabilities: [ gpu ]
+    volumes:
+      - llama-volume:/code/api/ml/models
     ports:
-      - "8081:8081"
+      - "5000:5000"
     depends_on:
       - minio
       - postgres
-      - redis
+#      - redis
 
   imageproxy:
     <<: *service
@@ -46,7 +65,8 @@ services:
       - MINIO_ROOT_USER=${MINIO_ROOT_USER}
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
     ports:
-      - 9001:9001
+      - "9001:9001"
+      - "9000:9000"
 
   postgres:
     <<: *service
@@ -55,20 +75,24 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: leaders2024
     volumes:
       - postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
 
-  redis:
-    <<: *service
-    image: redis:7.2-alpine
-    command: 'redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}'
-    container_name: redis
-    environment:
-      REDIS_PASSWORD: ${REDIS_PASSWORD}
-    volumes:
-      - redis:/data
+#  redis:
+#    <<: *service
+#    image: redis:7.2-alpine
+#    command: 'redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}'
+#    container_name: redis
+#    environment:
+#      REDIS_PASSWORD: ${REDIS_PASSWORD}
+#    volumes:
+#      - redis:/data
 
 volumes:
   minio:
   postgres:
-  redis:
+  llama-volume:
+#  redis:
