@@ -5,10 +5,12 @@ import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
 export async function generate(formData) {
-  console.log("GENERATE CALLED")
-  await new Promise((resolve) => setTimeout(resolve, 5000))
+  await new Promise((resolve) => setTimeout(resolve, 2000))
   return {
-    url: "/big.png",
+    url: "/small.png",
+    background: "#c4abcb",
+    width: 380,
+    height: 380,
   }
   // const resp = await fetch(`${apiUrl}/generate`, {
   //   method: "POST",

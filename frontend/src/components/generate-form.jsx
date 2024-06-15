@@ -22,11 +22,11 @@ const formSchema = z.object({
   width: z.coerce
     .number()
     .min(1, "Ширина должна быть больше нуля")
-    .max(2048, "Максимальная ширина - 2048px"),
+    .max(4096, "Максимальная ширина - 4096px"),
   height: z.coerce
     .number()
     .min(1, "Высота должна быть больше нуля")
-    .max(2048, "Максимальная высота - 2048px"),
+    .max(4096, "Максимальная высота - 4096px"),
 })
 
 export default function GenerateForm({ onSubmit, onDone, className }) {
@@ -34,8 +34,8 @@ export default function GenerateForm({ onSubmit, onDone, className }) {
     resolver: zodResolver(formSchema),
     mode: "onBlur",
     defaultValues: {
-      width: 512,
-      height: 512,
+      width: 2368,
+      height: 432,
       prompt: "",
     },
   })
@@ -76,7 +76,7 @@ export default function GenerateForm({ onSubmit, onDone, className }) {
                   <Input
                     required
                     type="number"
-                    max={2048}
+                    max={4096}
                     {...field}
                   />
                 </FormControl>
@@ -94,7 +94,7 @@ export default function GenerateForm({ onSubmit, onDone, className }) {
                   <Input
                     required
                     type="number"
-                    max={2048}
+                    max={4096}
                     {...field}
                   />
                 </FormControl>
