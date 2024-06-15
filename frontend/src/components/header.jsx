@@ -1,22 +1,26 @@
-import { ThemeSwitcher } from "./theme-switcher"
+import { currentUser } from "@/app/actions"
 import Navbar from "@/components/navbar"
+import { ThemeSwitcher } from "@/components/theme-switcher"
 import { Button } from "@/components/ui/button"
-import { LogIn, LogOut } from "lucide-react"
+import UserMenu from "@/components/user-menu"
+import { LogIn } from "lucide-react"
+import Link from "next/link"
 
-export default function Header({ user }) {
+export default async function Header() {
+  const user = await currentUser()
+
   return (
     <div className="w-full h-14 min-w-screen flex flex-row flex-wrap items-center justify-between px-2">
-      <Navbar />
+      <Navbar user={user} />
       <div className="h-full flex flex-row flex-nowrap items-center gap-2">
         {user ? (
-          <Button>
-            <LogOut className="mr-2 h-4 w-4" />
-            Выйти
-          </Button>
+          <UserMenu user={user} />
         ) : (
-          <Button>
-            <LogIn className="mr-2 h-4 w-4" />
-            Войти
+          <Button asChild>
+            <Link href="/sign_in">
+              <LogIn className="mr-2 h-4 w-4" />
+              Войти
+            </Link>
           </Button>
         )}
         <ThemeSwitcher />

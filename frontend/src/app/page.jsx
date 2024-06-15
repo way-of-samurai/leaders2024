@@ -1,13 +1,16 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import { currentUser } from "@/app/actions"
+import GeneratePanel from "@/components/generate-panel"
+import { redirect } from "next/navigation"
 
-export default function Home() {
+export default async function Home() {
+  const user = await currentUser()
+  if (!user) {
+    redirect("/sign_in")
+  }
+
   return (
-    <>
-      <Input value="Привет, я input!" />
-      <Textarea value="Привет, я textarea!" />
-      <Button>Отправить</Button>
-    </>
+    <main className="flex-grow py-2">
+      <GeneratePanel />
+    </main>
   )
 }

@@ -29,10 +29,10 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-          <main className="flex min-h-full flex-col items-center gap-4 p-24">
+          <div className="flex min-h-screen flex-col flex-nowrap">
+            <Header />
             {children}
-          </main>
+          </div>
         </ThemeProvider>
       </body>
     </html>
