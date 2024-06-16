@@ -5,7 +5,7 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
 
 from api.models import Client
-from api.services.clients import merge, get, get_all
+from api.services.clients import merge, get, get_all, delete
 
 clients = Blueprint("clients", __name__)
 
@@ -28,6 +28,13 @@ def list_clients():
 @jwt_required()
 def get_client(client_id: uuid.UUID):
     return jsonify(__map_client(get(client_id)))
+
+
+@clients.route('/<uuid:client_id>', methods=['DELETE'])
+@jwt_required()
+def delete_client(client_id: uuid.UUID):
+    delete(client_id)
+    return jsonify(message="Deleted"), 200
 
 
 def __map_client(client: Client) -> dict[Any, Any]:
