@@ -42,5 +42,5 @@ def get_current_user():
 
 
 if __name__ == '__main__':
-    DEBUG: Final[bool] = strtobool(os.environ.get('DEBUG', True))
+    DEBUG: Final[bool] = bool(strtobool(os.environ.get('DEBUG', "True")))
     app.run(host="0.0.0.0", debug=DEBUG)

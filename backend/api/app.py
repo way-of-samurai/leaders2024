@@ -1,5 +1,6 @@
 import logging
 import os
+from distutils.util import strtobool
 from pathlib import Path
 
 from flask import Flask
@@ -31,12 +32,13 @@ def create_app():
     from api.auth import jwt
     jwt.init_app(app)
 
-    with app.app_context():
-        default_model = active_model()
-        if default_model is None:
-            default_weights_path = os.environ["DEFAULT_SD_WEIGHTS_PATH"]
-            default_model = save_default_model(default_template, default_weights_path)
-        init_models(default_model)
+    if strtobool(os.environ.get("ACTIVATE_MODELS", "True")):
+        with app.app_context():
+            default_model = active_model()
+            if default_model is None:
+                default_weights_path = os.environ["DEFAULT_SD_WEIGHTS_PATH"]
+                default_model = save_default_model(default_template, default_weights_path)
+                init_models(default_model)
 
     app.register_blueprint(ml_models, url_prefix="/models")
     app.register_blueprint(recommendations, url_prefix="/recommendations")
