@@ -42,6 +42,7 @@ class Client(db.Model):
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
     features: Mapped[dict[str, Any]] = mapped_column(type_=JSON)
+    name: Mapped[str]
 
 
 class User(db.Model):

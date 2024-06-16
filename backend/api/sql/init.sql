@@ -7,7 +7,8 @@ create table if not exists users(
 
 create table if not exists clients(
     id uuid primary key,
-    features jsonb not null
+    features jsonb not null,
+    name varchar(100) not null
 );
 
 create table if not exists recommendations(

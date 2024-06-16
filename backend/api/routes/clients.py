@@ -14,7 +14,7 @@ clients = Blueprint("clients", __name__)
 @jwt_required()
 def upsert():
     params = request.get_json()
-    client = Client(id=params.get("id", uuid.uuid4()), features=params["features"])
+    client = Client(id=params.get("id", uuid.uuid4()), features=params["features"], name=params["name"])
     return jsonify(__map_client(merge(client)))
 
 
@@ -33,5 +33,6 @@ def get_client(client_id: uuid.UUID):
 def __map_client(client: Client) -> dict[Any, Any]:
     return {
         "id": client.id,
-        "features": client.features
+        "features": client.features,
+        "name": client.name
     }
