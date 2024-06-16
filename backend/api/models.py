@@ -11,15 +11,8 @@ from sqlalchemy.orm import mapped_column
 db = SQLAlchemy()
 
 
-class Base(db.Model):
-    __abstract__ = True
-    type_annotation_map = {
-        dict[str, Any]: JSON
-    }
-
-
 # an example mapping using the base
-class Image(Base):
+class Image(db.Model):
     __tablename__ = "images"
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
@@ -27,7 +20,7 @@ class Image(Base):
     path: Mapped[str]
 
 
-class Recommendation(Base):
+class Recommendation(db.Model):
     __tablename__ = "recommendations"
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
@@ -35,7 +28,7 @@ class Recommendation(Base):
     client_id: Mapped[uuid.UUID]
     image_id: Mapped[uuid.UUID]
     model_id: Mapped[uuid.UUID]
-    product_features: Mapped[dict[str, Any]]
+    product_features: Mapped[dict[str, Any]] = mapped_column(type_=JSON)
     user_promt: Mapped[str]
     keywords: Mapped[str]
     rating: Mapped[int]
@@ -44,14 +37,14 @@ class Recommendation(Base):
     )
 
 
-class Client(Base):
+class Client(db.Model):
     __tablename__ = "clients"
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
-    features: Mapped[dict[str, Any]]
+    features: Mapped[dict[str, Any]] = mapped_column(type_=JSON)
 
 
-class User(Base):
+class User(db.Model):
     __tablename__ = "users"
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
@@ -59,7 +52,7 @@ class User(Base):
     password: Mapped[str]
 
 
-class Model(Base):
+class Model(db.Model):
     __tablename__ = "models"
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
