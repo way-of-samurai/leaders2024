@@ -10,7 +10,7 @@ from api.services.clients import merge, get, get_all
 clients = Blueprint("clients", __name__)
 
 
-@clients.route('/', methods=['POST'])
+@clients.route('', methods=['POST'])
 @jwt_required()
 def upsert():
     params = request.get_json()
@@ -18,7 +18,7 @@ def upsert():
     return jsonify(__map_client(merge(client)))
 
 
-@clients.route('/', methods=['GET'])
+@clients.route('', methods=['GET'])
 @jwt_required()
 def list_clients():
     return jsonify(list(map(__map_client, get_all())))
