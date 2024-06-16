@@ -4,23 +4,22 @@ from typing import Any
 
 import sqlalchemy
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, JSON, TIMESTAMP, ARRAY
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy import String, JSON, TIMESTAMP
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 
 db = SQLAlchemy()
 
 
-# declarative base class
-class Base(DeclarativeBase):
+class Base(db.Model):
+    __abstract__ = True
     type_annotation_map = {
         dict[str, Any]: JSON
     }
 
 
 # an example mapping using the base
-class Image(db.Model):
+class Image(Base):
     __tablename__ = "images"
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
@@ -52,7 +51,7 @@ class Client(Base):
     features: Mapped[dict[str, Any]]
 
 
-class User(db.Model):
+class User(Base):
     __tablename__ = "users"
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
@@ -60,7 +59,7 @@ class User(db.Model):
     password: Mapped[str]
 
 
-class Model(db.Model):
+class Model(Base):
     __tablename__ = "models"
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True)

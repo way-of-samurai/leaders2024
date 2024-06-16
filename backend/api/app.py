@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 
 from api.ml.llm import default_template
+from api.routes.clients import clients
 from api.routes.images import images
 from api.routes.ml_models import ml_models
 from api.routes.recommendations import recommendations
@@ -40,6 +41,7 @@ def create_app():
     app.register_blueprint(ml_models, url_prefix="/models")
     app.register_blueprint(recommendations, url_prefix="/recommendations")
     app.register_blueprint(images, url_prefix="/images")
+    app.register_blueprint(clients, url_prefix="/clients")
     return app
 
 
