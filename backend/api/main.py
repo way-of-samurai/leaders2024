@@ -1,3 +1,4 @@
+import logging
 import os
 from datetime import timedelta
 from distutils.util import strtobool
@@ -9,6 +10,8 @@ from flask_jwt_extended import create_access_token, jwt_required, current_user, 
 from api.app import create_app
 from api.models import db
 from api.services import users
+
+logging.basicConfig(level=logging.INFO)
 
 app = create_app()
 

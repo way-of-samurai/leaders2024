@@ -15,3 +15,8 @@ def get(client_id: uuid.UUID) -> Client:
 
 def get_all() -> list[Client]:
     return Client.query.all()
+
+
+def delete(client_id: uuid.UUID):
+    Client.query.filter_by(id=client_id).delete()
+    db.session.commit()

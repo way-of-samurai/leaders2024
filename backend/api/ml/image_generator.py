@@ -1,3 +1,4 @@
+import logging
 import os
 from io import BytesIO
 
@@ -10,6 +11,7 @@ from api import models
 from api.models import Model
 from api.s3 import download_to_tmp, fs
 from api.services.images import save_image
+from rembg import remove
 
 MAX_SIZE = 512
 REFERENCES_SIZE = (512, 512)  # The size of reference images (all images will be resized to this size)
@@ -22,8 +24,12 @@ __upscale_pipe: StableDiffusionLatentUpscalePipeline | None = None
 __generator = None
 __ref_images = None
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
 
 def generate_image(keywords: str, xy: (int, int)) -> models.Image:
+    logger.info("Generate image(%s) with keywords: %s", str(xy), keywords)
     promo = __generate_promo(keywords, xy)
     return save_image("generated_promo.png", promo)
 
@@ -56,8 +62,9 @@ def __generate_promo(promt: str, xy: (int, int)) -> bytes:
             num_inference_steps=30,
             guidance_scale=0,
         ).images[0]
+    image_rm = remove(image)
     image_bytes = BytesIO()
-    image.save(image_bytes, format="PNG")
+    image_rm.save(image_bytes, format="PNG")
     return image_bytes.getvalue()
 
 

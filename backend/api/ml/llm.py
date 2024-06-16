@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 from pathlib import Path
 from typing import Final
@@ -24,13 +25,17 @@ This is followed by a description of the bank's client, the product that is supp
 __llm: LlamaCpp | None = None
 __prompt: PromptTemplate | None = None
 
+logger = logging.getLogger(__name__)
+logger.setLevel("INFO")
 
 def generate_keywords(user_promt: str | None, client_features: dict, product_features: dict) -> str:
     chain = __prompt | __llm
     text = f"client description - {json.dumps(client_features)}, product description - {json.dumps(product_features)}"
     if user_promt:
         text += f", additional promt - {user_promt}"
+    logger.info("Call LLM with input: %s", text)
     res: str = chain.invoke({'input': text})
+    logger.info("LLM result: %s", res)
     return res
 
 
