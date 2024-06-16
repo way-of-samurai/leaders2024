@@ -15,12 +15,12 @@ recommendations = Blueprint("recommendations", __name__)
 @jwt_required()
 def generate_promo():
     params = request.get_json()
-    user_promt = params.get("promt")
+    user_prompt = params.get("prompt")
     xy = tuple(map(lambda i: int(i), params["xy"].split(":")))
     client = clients.get(uuid.UUID(params["client_id"]))
     client_features = client.features
     product_features = params["product_features"]
-    keywords = llm.generate_keywords(user_promt, client_features, product_features)
+    keywords = llm.generate_keywords(user_prompt, client_features, product_features)
     image = generate_image(keywords, xy)
     model = ml_models.active_model()
     recommendation = Recommendation(
@@ -30,7 +30,7 @@ def generate_promo():
         image_id=image.id,
         model_id=model.id,
         keywords=keywords,
-        user_promt=user_promt,
+        user_promt=user_prompt,
         product_features=product_features
     )
     db.session.add(recommendation)

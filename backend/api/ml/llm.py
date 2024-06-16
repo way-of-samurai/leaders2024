@@ -28,11 +28,12 @@ __prompt: PromptTemplate | None = None
 logger = logging.getLogger(__name__)
 logger.setLevel("INFO")
 
-def generate_keywords(user_promt: str | None, client_features: dict, product_features: dict) -> str:
+
+def generate_keywords(user_prompt: str | None, client_features: dict, product_features: dict) -> str:
     chain = __prompt | __llm
     text = f"client description - {json.dumps(client_features)}, product description - {json.dumps(product_features)}"
-    if user_promt:
-        text += f", additional promt - {user_promt}"
+    if user_prompt:
+        text += f", additional promt - {user_prompt}"
     logger.info("Call LLM with input: %s", text)
     res: str = chain.invoke({'input': text})
     logger.info("LLM result: %s", res)
