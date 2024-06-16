@@ -46,6 +46,7 @@ services:
   imageproxy:
     <<: *service
     image: darthsim/imgproxy:latest
+    container_name: imageproxy
     environment:
       IMGPROXY_USE_S3: "true"
       IMGPROXY_S3_ENDPOINT: "http://minio:9000"
