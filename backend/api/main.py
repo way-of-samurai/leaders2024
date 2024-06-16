@@ -34,11 +34,11 @@ def login():
         return jsonify('Bad email or Password'), 401
 
 
-@app.route('/current_user', methods=['POST'])
+@app.route('/current_user', methods=['GET'])
 @jwt_required()
 def login():
     user = current_user
-    return jsonify({"id": user.id, "login": user.login})
+    return jsonify({"id": user.id, "login": user.login, "role": user.role})
 
 
 if __name__ == '__main__':

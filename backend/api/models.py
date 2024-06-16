@@ -50,6 +50,7 @@ class User(db.Model):
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
     login: Mapped[str]
     password: Mapped[str]
+    role: Mapped[str]
 
 
 class Model(db.Model):
