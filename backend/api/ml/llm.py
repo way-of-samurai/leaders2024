@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 from typing import Final
@@ -24,8 +25,10 @@ __llm: LlamaCpp | None = None
 __prompt: PromptTemplate | None = None
 
 
-def generate_keywords(text: str) -> str:
+def generate_keywords(user_promt: str, client_features: dict, product_features: dict) -> str:
     chain = __prompt | __llm
+    text = (f"client description - {json.dumps(client_features)}, product description - {json.dumps(product_features)},"
+            f" additional promt - {user_promt}")
     res: str = chain.invoke({'input': text})
     return res
 

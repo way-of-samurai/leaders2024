@@ -4,7 +4,8 @@ from typing import Any
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
 
-from api.models import db, Client
+from api.models import Client
+from api.services.clients import merge, get, get_all
 
 clients = Blueprint("clients", __name__)
 
@@ -14,22 +15,19 @@ clients = Blueprint("clients", __name__)
 def upsert():
     params = request.get_json()
     client = Client(id=params.get("id", uuid.uuid4()), features=params["features"])
-    merged = db.session.merge(client)
-    db.session.commit()
-    return jsonify(__map(merged))
+    return jsonify(__map(merge(client)))
 
 
 @clients.route('/', methods=['GET'])
 @jwt_required()
-def upsert():
-    return jsonify(map(__map, Client.query.all()))
+def list_clients():
+    return jsonify(map(__map, get_all()))
 
 
 @clients.route('/<uuid:client_id>', methods=['GET'])
 @jwt_required()
-def get(client_id: uuid.UUID):
-    client = Client.query.filter_by(id=client_id).one_or_404()
-    return jsonify(__map(client))
+def get_client(client_id: uuid.UUID):
+    return jsonify(__map(get(client_id)))
 
 
 def __map(client: Client) -> dict[Any, Any]:
