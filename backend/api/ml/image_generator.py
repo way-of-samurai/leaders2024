@@ -19,9 +19,7 @@ __negative_promt = os.environ.get("NEGATIVE_PROMT", "text, watermark, lowres, lo
 __device = os.environ.get("GPU_DEVICE", "cuda:0")
 __pipe: StableDiffusionPipeline | None = None
 __upscale_pipe: StableDiffusionLatentUpscalePipeline | None = None
-__generator = torch.Generator(__device)
-if "SEED" in os.environ:
-    __generator = __generator.manual_seed(int(os.environ["SEED"]))
+__generator = None
 
 __ref_images = [
     Image.open(BytesIO(fs.read_bytes(png))).resize(REFERENCES_SIZE) for png in fs.ls(os.environ["SD_REFERENCES_PATH"])
@@ -73,6 +71,11 @@ def set_weights(weights_path: str, pipe: StableDiffusionPipeline = __pipe):
 
 
 def init_model(model: Model):
+    global __generator
+    generator = torch.Generator(__device)
+    if "SEED" in os.environ:
+        generator = generator.manual_seed(int(os.environ["SEED"]))
+    __generator = generator
     image_encoder: CLIPVisionModelWithProjection = CLIPVisionModelWithProjection.from_pretrained(
         "h94/IP-Adapter",
         subfolder="models/image_encoder",
