@@ -20,10 +20,7 @@ __device = os.environ.get("GPU_DEVICE", "cuda:0")
 __pipe: StableDiffusionPipeline | None = None
 __upscale_pipe: StableDiffusionLatentUpscalePipeline | None = None
 __generator = None
-
-__ref_images = [
-    Image.open(BytesIO(fs.read_bytes(png))).resize(REFERENCES_SIZE) for png in fs.ls(os.environ["SD_REFERENCES_PATH"])
-]
+__ref_images = None
 
 
 def generate_image(keywords: str, xy: (int, int)) -> models.Image:
@@ -131,3 +128,9 @@ def init_model(model: Model):
 
     global __upscale_pipe
     __upscale_pipe = upscale_pipe
+
+    global __ref_images
+    __ref_images = [
+        Image.open(BytesIO(fs.read_bytes(png))).resize(REFERENCES_SIZE) for png in
+        fs.ls(os.environ["SD_REFERENCES_PATH"])
+    ]
