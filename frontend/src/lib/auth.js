@@ -1,24 +1,19 @@
 "use server"
 
-import { unstable_noStore as noStore } from "next/cache"
+import { currentUser as apiCurrentUser } from "@/lib/api"
+import { cookies } from "next/headers"
+
+export async function authToken() {
+  return cookies().get("token")?.value || null
+}
 
 export async function currentUser() {
-  noStore()
-
-  // return {
-  //   username: "nitwof",
-  //   role: "admin",
-  // }
-
-  const resp = await fetch(`${process.env.API_URL}/current_user`, {
-    method: "GET",
-  }).then((res) => res.json())
-
-  if (resp.status != 200) {
+  const token = await authToken()
+  if (!token) {
     return null
   }
 
-  return resp
+  return await apiCurrentUser(token)
 }
 
 export async function isAuthenticated() {

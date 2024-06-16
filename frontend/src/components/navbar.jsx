@@ -41,6 +41,9 @@ export default function Navbar({ user }) {
               <NavLink href="/admin/history">История</NavLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
+              <NavLink href="/admin/clients">Клиенты</NavLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
               <NavLink href="/admin/settings">Настройки</NavLink>
             </NavigationMenuItem>
             <NavigationMenuItem>

@@ -5,7 +5,6 @@ WORKDIR /app
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN \
-    # apk --no-cache add gcompat libstdc++ libuuid && \
     npm install && \
     npm run build
 
@@ -14,7 +13,6 @@ FROM node:${NODE_VERSION}-slim
 WORKDIR /app
 
 RUN \
-    # apk --no-cache add gcompat libstdc++ libuuid && \
     addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 

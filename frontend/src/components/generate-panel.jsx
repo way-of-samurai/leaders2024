@@ -16,7 +16,7 @@ import { downloadURI } from "@/lib/utils"
 import { Save } from "lucide-react"
 import { useRef, useState } from "react"
 
-export default function GeneratePanel({ className }) {
+export default function GeneratePanel({ className, clients }) {
   const [pending, setPending] = useState(false)
   const [imageUrl, setImageUrl] = useState("")
   const [imageSize, setImageSize] = useState({ height: 380, width: 380 })
@@ -43,6 +43,7 @@ export default function GeneratePanel({ className }) {
       >
         <GenerateForm
           className="p-4"
+          clients={clients}
           onSubmit={({ height, width }) => {
             setPending(true)
             setSize({ height: height, width: width })

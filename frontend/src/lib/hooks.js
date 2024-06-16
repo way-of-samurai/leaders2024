@@ -10,7 +10,7 @@ export const useSize = (target) => {
     setSize(target.current.getBoundingClientRect())
 
     const resizeObserver = new ResizeObserver(() => {
-      setSize(target.current.getBoundingClientRect())
+      setSize(target?.current?.getBoundingClientRect())
     })
     resizeObserver.observe(target.current)
     return () => resizeObserver.disconnect() // clean up

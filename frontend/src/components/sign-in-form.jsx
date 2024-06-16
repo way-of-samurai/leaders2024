@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { PasswordInput } from "@/components/ui/password-input"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -30,12 +31,15 @@ export default function SignInForm() {
       password: "",
     },
   })
+  const [error, setError] = useState(null)
 
   return (
     <Form {...form}>
       <form
-        action={signIn}
-        // onSubmit={form.handleSubmit((values) => console.log(values))}
+        action={async (formData) => {
+          const res = await signIn(formData)
+          setError(res.error)
+        }}
         className="flex flex-col gap-4"
       >
         <FormField
@@ -72,6 +76,11 @@ export default function SignInForm() {
             </FormItem>
           )}
         />
+        {error && (
+          <p className={"text-sm font-medium text-destructive"}>
+            Неверный логин или пароль
+          </p>
+        )}
         <Button
           type="submit"
           className="mt-4"
