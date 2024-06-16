@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 
 from api.ml.llm import default_template
