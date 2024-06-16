@@ -36,7 +36,7 @@ def login():
 
 @app.route('/current_user', methods=['GET'])
 @jwt_required()
-def login():
+def get_current_user():
     user = current_user
     return jsonify({"id": user.id, "login": user.login, "role": user.role})
 
