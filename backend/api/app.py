@@ -1,10 +1,8 @@
 import logging
 import os
-from distutils.util import strtobool
 from pathlib import Path
 
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 
 from api.ml.llm import default_template
@@ -32,13 +30,13 @@ def create_app():
     from api.auth import jwt
     jwt.init_app(app)
 
-    if bool(strtobool(os.environ.get("ACTIVATE_MODELS", "true"))):
-        with app.app_context():
-            default_model = active_model()
-            if default_model is None:
-                default_weights_path = os.environ["DEFAULT_SD_WEIGHTS_PATH"]
-                default_model = save_default_model(default_template, default_weights_path)
-                init_models(default_model)
+    # if bool(strtobool(os.environ.get("ACTIVATE_MODELS", "true"))):
+    with app.app_context():
+        default_model = active_model()
+        if default_model is None:
+            default_weights_path = os.environ["DEFAULT_SD_WEIGHTS_PATH"]
+            default_model = save_default_model(default_template, default_weights_path)
+            init_models(default_model)
 
     app.register_blueprint(ml_models, url_prefix="/models")
     app.register_blueprint(recommendations, url_prefix="/recommendations")
