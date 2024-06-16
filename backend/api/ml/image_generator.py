@@ -1,3 +1,4 @@
+import logging
 import os
 from io import BytesIO
 
@@ -22,8 +23,12 @@ __upscale_pipe: StableDiffusionLatentUpscalePipeline | None = None
 __generator = None
 __ref_images = None
 
+logger = logging.getLogger(__name__)
+logger.setLevel("INFO")
+
 
 def generate_image(keywords: str, xy: (int, int)) -> models.Image:
+    logger.info("Generate image(%s) with keywords: %s", xy, keywords)
     promo = __generate_promo(keywords, xy)
     return save_image("generated_promo.png", promo)
 
