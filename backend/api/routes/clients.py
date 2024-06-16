@@ -15,22 +15,22 @@ clients = Blueprint("clients", __name__)
 def upsert():
     params = request.get_json()
     client = Client(id=params.get("id", uuid.uuid4()), features=params["features"])
-    return jsonify(__map(merge(client)))
+    return jsonify(__map_client(merge(client)))
 
 
 @clients.route('/', methods=['GET'])
 @jwt_required()
 def list_clients():
-    return jsonify(map(__map, get_all()))
+    return jsonify(list(map(__map_client, get_all())))
 
 
 @clients.route('/<uuid:client_id>', methods=['GET'])
 @jwt_required()
 def get_client(client_id: uuid.UUID):
-    return jsonify(__map(get(client_id)))
+    return jsonify(__map_client(get(client_id)))
 
 
-def __map(client: Client) -> dict[Any, Any]:
+def __map_client(client: Client) -> dict[Any, Any]:
     return {
         "id": client.id,
         "features": client.features
