@@ -29,7 +29,7 @@ export async function generate(formData) {
   }).then((res) => res.json())
 
   return {
-    url: resp["url"].replace(process.env.S3_URL, ""),
+    url: resp["url"].replace("s3:/", ""),
   }
 }
 

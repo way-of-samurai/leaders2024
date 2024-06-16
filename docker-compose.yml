@@ -9,7 +9,8 @@ services:
     build: ./frontend
     environment:
       API_URL: http://backend:8081
-      S3_URL: s3://minio
+      IMAGE_PROXY_HOST: imageproxy
+      IMAGE_PROXY_PORT: 8080
     ports:
       - "3000:3000"
 
@@ -22,6 +23,17 @@ services:
       - minio
       - postgres
       - redis
+
+  imageproxy:
+    <<: *service
+    image: darthsim/imgproxy:latest
+    environment:
+      IMGPROXY_USE_S3: "true"
+      IMGPROXY_S3_ENDPOINT: "http://minio:9000"
+      AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
+      AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
+    depends_on:
+      - minio
 
   minio:
     <<: *service
