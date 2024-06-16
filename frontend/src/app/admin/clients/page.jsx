@@ -1,4 +1,5 @@
 import { getClients } from "@/app/actions"
+import Clients from "@/components/clients"
 import { isAuthenticatedAdmin } from "@/lib/auth"
 import { redirect } from "next/navigation"
 
@@ -8,9 +9,10 @@ export default async function History() {
   }
 
   const clients = await getClients()
-  console.log(clients)
 
   return (
-    <main className="flex min-h-full flex-col justify-center items-center gap-4 p-24"></main>
+    <main className="flex min-h-full flex-col justify-center items-center gap-4 p-24">
+      <Clients clients={clients} />
+    </main>
   )
 }

@@ -1,6 +1,7 @@
 "use server"
 
 import {
+  deleteClient as apiDeleteClient,
   generate as apiGenerate,
   getClients as apiGetClients,
   login,
@@ -51,7 +52,6 @@ export async function generate(values) {
     redirect("/sign_in")
   }
 
-  console.log(values)
   const data = await apiGenerate(await authToken(), {
     prompt: values.prompt,
     height: 512,
@@ -102,15 +102,20 @@ export async function getClients() {
   return await apiGetClients(await authToken())
 }
 
-export async function createClient({ features }) {
+export async function createClient({ name, features }) {
   return await setClient(await authToken(), {
-    features: features,
+    name: name,
+    features: features || {},
   })
 }
 
-export async function updateClient(id, { features }) {
+export async function updateClient({ id, name, features }) {
   return await setClient(await authToken(), {
     id: id,
-    features: features,
+    name: name,
+    features: features || {},
   })
+}
+export async function deleteClient(id) {
+  return await apiDeleteClient(await authToken(), id)
 }

@@ -9,7 +9,6 @@ export default async function Home() {
   }
 
   const clients = await getClients()
-  console.log(clients)
 
   return (
     <main className="flex-grow py-2">

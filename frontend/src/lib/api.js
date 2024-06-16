@@ -103,7 +103,7 @@ export const getClients = async (token) => {
   return data.map((client) => ({
     id: client.id,
     name: client.name,
-    features: client.features,
+    features: client.features || {},
   }))
 }
 
@@ -129,6 +129,25 @@ export const setClient = async (token, body) => {
   return {
     id: data.id,
     name: data.name,
-    features: data.features,
+    features: data.features || {},
   }
+}
+
+export const deleteClient = async (token, id) => {
+  noStore()
+
+  const resp = await fetch(`${process.env.API_URL}/clients/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+  })
+
+  if (!resp.ok) {
+    console.log(resp)
+    return null
+  }
+
+  return {}
 }

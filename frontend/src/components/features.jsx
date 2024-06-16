@@ -76,8 +76,8 @@ export function Feature({ feature, value, onChange, onDelete }) {
 
   return (
     <TableRow>
-      <TableCell>{feature}</TableCell>
-      <TableCell>{value}</TableCell>
+      <TableCell className="overflow-hidden">{feature}</TableCell>
+      <TableCell className="overflow-hidden">{value}</TableCell>
       <TableCell className="flex flex-row justify-end text-right">
         <Button
           type="button"
@@ -119,7 +119,7 @@ export default function Features({ className, defaultValue, onChange }) {
       >
         Добавить признак
       </Button>
-      <Table>
+      <Table className="table-fixed">
         <TableHeader>
           <TableRow>
             <TableHead>Признак</TableHead>
