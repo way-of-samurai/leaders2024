@@ -11,6 +11,7 @@ from api import models
 from api.models import Model
 from api.s3 import download_to_tmp, fs
 from api.services.images import save_image
+from rembg import remove
 
 MAX_SIZE = 512
 REFERENCES_SIZE = (512, 512)  # The size of reference images (all images will be resized to this size)
@@ -61,8 +62,9 @@ def __generate_promo(promt: str, xy: (int, int)) -> bytes:
             num_inference_steps=30,
             guidance_scale=0,
         ).images[0]
+    image_rm = remove(image)
     image_bytes = BytesIO()
-    image.save(image_bytes, format="PNG")
+    image_rm.save(image_bytes, format="PNG")
     return image_bytes.getvalue()
 
 
