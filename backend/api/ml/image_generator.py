@@ -25,7 +25,7 @@ __generator = None
 __ref_images = None
 
 logger = logging.getLogger(__name__)
-logger.setLevel("INFO")
+logger.setLevel(logging.INFO)
 
 
 def generate_image(keywords: str, xy: (int, int)) -> models.Image:
