@@ -1,13 +1,14 @@
 import os
 from datetime import timedelta
+from distutils.util import strtobool
 from typing import Final
 
-from distutils.util import strtobool
 from flask import request, jsonify
-from flask_jwt_extended import create_access_token, jwt_required, current_user
+from flask_jwt_extended import create_access_token, jwt_required, current_user, get_jwt_identity, create_refresh_token
 
 from api.app import create_app
-from api.models import db, User
+from api.models import db
+from api.services import users
 
 app = create_app()
 
@@ -26,12 +27,23 @@ def login():
         user_login = request.form['login']
         password = request.form['password']
 
-    user = User.query.filter_by(login=user_login, password=password).one_or_none()
+    user = users.find(user_login, password)
     if user:
         access_token = create_access_token(identity=user, expires_delta=timedelta(hours=1))
-        return jsonify(message='Login Successful', access_token=access_token)
+        refresh_token = create_refresh_token(identity=user, expires_delta=timedelta(days=1))
+        return jsonify(message='Login Successful', access_token=access_token, refresh_token=refresh_token)
     else:
-        return jsonify('Bad email or Password'), 401
+        return jsonify('Bad login or password'), 401
+
+
+@app.route('/refresh', methods=['POST'])
+@jwt_required(refresh=True)
+def refresh():
+    user = users.get(get_jwt_identity())
+    ret = {
+        'access_token': create_access_token(identity=user)
+    }
+    return jsonify(ret), 200
 
 
 @app.route('/current_user', methods=['GET'])

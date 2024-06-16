@@ -15,7 +15,7 @@ recommendations = Blueprint("recommendations", __name__)
 @jwt_required()
 def generate_promo():
     params = request.get_json()
-    user_promt = params["promt"]
+    user_promt = params.get("promt")
     xy = tuple(map(lambda i: int(i), params["xy"].split(":")))
     client = clients.get(uuid.UUID(params["client_id"]))
     client_features = client.features

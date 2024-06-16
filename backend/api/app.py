@@ -32,7 +32,7 @@ def create_app():
     from api.auth import jwt
     jwt.init_app(app)
 
-    if strtobool(os.environ.get("ACTIVATE_MODELS", "True")):
+    if bool(strtobool(os.environ.get("ACTIVATE_MODELS", "true"))):
         with app.app_context():
             default_model = active_model()
             if default_model is None:
