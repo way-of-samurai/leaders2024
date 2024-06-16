@@ -29,7 +29,7 @@ logger.setLevel(logging.INFO)
 
 
 def generate_image(keywords: str, xy: (int, int)) -> models.Image:
-    logger.info("Generate image(%s) with keywords: %s", xy, keywords)
+    logger.info("Generate image(%s) with keywords: %s", str(xy), keywords)
     promo = __generate_promo(keywords, xy)
     return save_image("generated_promo.png", promo)
 
