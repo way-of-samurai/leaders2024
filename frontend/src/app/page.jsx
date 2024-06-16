@@ -1,10 +1,9 @@
-import { currentUser } from "@/app/actions"
 import GeneratePanel from "@/components/generate-panel"
+import { isAuthenticated } from "@/lib/auth"
 import { redirect } from "next/navigation"
 
 export default async function Home() {
-  const user = await currentUser()
-  if (!user) {
+  if (!(await isAuthenticated())) {
     redirect("/sign_in")
   }
 

@@ -1,11 +1,10 @@
-import { currentUser } from "@/app/actions"
 import SignInForm from "@/components/sign-in-form"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { isAuthenticated } from "@/lib/auth"
 import { redirect } from "next/navigation"
 
 export default async function SignIn() {
-  const user = await currentUser()
-  if (user) {
+  if (await isAuthenticated()) {
     redirect("/")
   }
 

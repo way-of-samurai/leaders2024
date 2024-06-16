@@ -1,9 +1,8 @@
-import { currentUser } from "@/app/actions"
+import { isAuthenticatedAdmin } from "@/lib/auth"
 import { redirect } from "next/navigation"
 
 export default async function Users() {
-  const user = await currentUser()
-  if (!user || user.role !== "admin") {
+  if (!(await isAuthenticatedAdmin())) {
     redirect("/")
   }
 

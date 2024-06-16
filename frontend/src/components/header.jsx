@@ -1,8 +1,8 @@
-import { currentUser } from "@/app/actions"
 import Navbar from "@/components/navbar"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 import { Button } from "@/components/ui/button"
 import UserMenu from "@/components/user-menu"
+import { currentUser } from "@/lib/auth"
 import { LogIn } from "lucide-react"
 import Link from "next/link"
 
