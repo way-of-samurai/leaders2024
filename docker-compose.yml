@@ -8,7 +8,7 @@ services:
     <<: *service
     build: ./frontend
     environment:
-      API_URL: http://backend:8081
+      API_URL: http://backend:5000
       IMAGE_PROXY_HOST: imageproxy
       IMAGE_PROXY_PORT: 8080
     ports:
